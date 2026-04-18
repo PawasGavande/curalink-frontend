@@ -30,10 +30,13 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/query", {
-        disease: query.toLowerCase(),
-        query,
-      });
+      const res = await axios.post(
+        "https://crushing-hangover-shawl.ngrok-free.dev/api/query",
+        {
+          disease: query.toLowerCase(),
+          query,
+        }
+      );
 
       setMessages((prev) => [
         ...prev,
@@ -43,10 +46,14 @@ function App() {
           sources: res.data.sources,
         },
       ]);
-    } catch {
+    } catch (err) {
+      console.error(err);
       setMessages((prev) => [
         ...prev,
-        { type: "bot", text: "⚠️ Backend not responding. Please check the server." },
+        {
+          type: "bot",
+          text: "⚠️ Backend not responding. Make sure server + ngrok are running.",
+        },
       ]);
     }
 
@@ -65,7 +72,6 @@ function App() {
   return (
     <div className="app">
 
-      {/* ── Sidebar ── */}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <div className="logo-orb" />
@@ -95,10 +101,8 @@ function App() {
         </div>
       </aside>
 
-      {/* ── Main ── */}
       <main className="main">
 
-        {/* Header */}
         <header className="header">
           <div>
             <div className="header-title">Medical Intelligence</div>
@@ -110,7 +114,6 @@ function App() {
           </div>
         </header>
 
-        {/* Chat */}
         <div className="chat-container" ref={chatRef}>
 
           {messages.length === 0 && (
@@ -167,7 +170,6 @@ function App() {
           )}
         </div>
 
-        {/* Input */}
         <div className="input-container">
           <div className="input-box">
             <input
